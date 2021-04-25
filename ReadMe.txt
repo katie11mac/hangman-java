@@ -1,0 +1,39 @@
+﻿I have neither given nor received any unauthorized aid on this assignment. -Katie Macalintal 
+
+
+Hangman.java 
+Provided Variables: int numWords, String[] words, String gameWord, String dispWord, char[] dispArr
+Provided Methods: showMan(int numParts), setWords(), getNumWords(), getwords() 
+
+
+selectGameWord(): Since all the words are stored in an array, I chose a random index through the Random class’ .nextInt(int bound) method. To ensure that the word is later printed in all capital letters, I called the .toUpperCase() method on the randomly selected word. Storing the game word in the uppercase appeared to be useful when later trying to compare the user’s guess to the characters in the word. 
+
+
+getCurrentWord(char guess): This method assumes that the guess argument has already been uppercased (see getGuessL() for why I did not convert to uppercase here). It’s important that the guess is uppercased for the game word is also uppercased. Once every letter in the word has been checked, it updates the dispWord String by converting the dispArr to a String. Returning the displayed word as a String will later be helpful in the driver class when checking if the user has guessed all the letters in the word.  
+
+
+getIncorrectGuesses(): Returns the incorrect guesses so far.
+
+
+updateIncorrectGuesses(char guess): This method assumes that the guess argument has already been uppercased (see getGuessL() for why I did not convert to uppercase here). If the user’s guess is not in the word, then the character they guessed is concatenated to the incorrectGuesses String. I decided to make the incorrectGuesses a String because I found it to be more efficient when checking if the user had already reached their max amount of incorrect guesses later in the driver class. If it was a char[], it would be more difficult to check when the player has used all their guesses up since it would not be logical to check it by length. 
+
+
+HangmanDriver.java 
+main method: This main method has a while loop inside of another while loop so that the user can both play multiple games of hangman and enter their guesses continuously. 
+In the outer while loop, a new Hangman game is generated and three boolean variables (guessedWord, won, lost) are initialized so that they can all reset for each game. After reviewing the code, I noticed that only one of the variables (won or lost) is actually necessary since setting won to false would be equivalent to setting lost to true. 
+The inner while loop handles the guessing process. When the player enters a correct letter guess, the program checks if they happened to guess all the letters in the game word, which is where returning a String for getCurrentWord came in handy. Returning it as a String allowed me to use the .indexOf method to see if there are any ‘-’ left in the display array. Regardless of whether or not the player guesses a correct letter, the display of the game is updated (eg. the hangman picture, the display of the current word, the incorrect guesses). While reviewing my code, I noticed that with a few tweaks these print statements could have been put into a function instead to avoid repeated lines of code. 
+
+
+getChoice(): Scans the user’s preference and modifies it (.toUpperCase() and .charAt(0)), so that the game can handle both cases and only works with the necessary parts of their response. 
+
+
+getGuessL(): Scans the user’s preference and modifies it (.toUpperCase() and .charAt(0)), so that the game can handle both cases, their guess can be compared to the uppercased game word, and the game will only work with the necessary parts of their response. This method is always called before calling getCurrentWord or updateIncorrectGuesses when handling a letter guess, and it converts the player’s guess to uppercase. Therefore, I think that adding a statement that converts the guess argument to uppercase in those methods would be redundant. 
+
+
+getGuessW(): Scans the user’s preference and modifies it (.toUpperCase() and .trim()), so that the game can handle both cases, their guess can be compared to the uppercased game word, and the game will only work with the necessary parts of their response. 
+
+
+Bugs: 
+* If the player enters anything but an uppercase or lowercase L when asked if they want to enter a letter or word as a guess, they will automatically be set up to guess a word. 
+* The game will handle duplicate guesses as if they had never been guessed (eg. if the player guesses a wrong letter multiple times, it will only count that as one incorrect guess; if the player guesses a correct letter multiple times, it will say correct again even though it has already been guessed) 
+* If the user enters anything but a y or n when asked if they want to play another round of hangman, another round of the game will begin because the playing variable is never changed.
